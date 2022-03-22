@@ -10,9 +10,7 @@ export namespace RTC {
     export function initNameValue(object: NameValue, init?: Partial<NameValue> | GIOPDecoder) {
         if (init instanceof GIOPDecoder) {
             const decoder = init
-console.log("aaaa1");
             object.name = decoder.string()
-console.log("aaaa1");
         } else {
             object.name = (init === undefined || init.name === undefined) ? "" : init.name
         }
@@ -83,19 +81,12 @@ console.log("aaaa1");
     export function initPortProfile(object: PortProfile, init?: Partial<PortProfile> | GIOPDecoder) {
         if (init instanceof GIOPDecoder) {
             const decoder = init
-console.log("aaaa1");
             object.name = decoder.string()
-console.log("aaaa2", object.name);
             object.interfaces = decoder.sequence(() => decoder.value("omg.org/RTC/PortInterfaceProfile"))
-console.log("aaaa3", object.interfaces);
             object.port_ref = decoder.object()
-console.log("aaaa4", object.port_ref);
             object.connector_profiles = decoder.sequence(() => decoder.value("omg.org/RTC/ConnectorProfile"))
-console.log("aaaa5", object.connector_profiles);
             object.owner = decoder.object()
-console.log("aaaa6", object.owner);
             object.properties = decoder.sequence(() => decoder.value("omg.org/RTC/NameValue"))
-console.log("aaaa7", object.properties);
         } else {
             object.name = (init === undefined || init.name === undefined) ? "" : init.name
             object.interfaces = init?.interfaces instanceof Array ? init!.interfaces : []
@@ -130,25 +121,15 @@ console.log("aaaa7", object.properties);
     export function initComponentProfile(object: ComponentProfile, init?: Partial<ComponentProfile> | GIOPDecoder) {
         if (init instanceof GIOPDecoder) {
             const decoder = init
-console.log("aaaa1");
             object.instance_name = decoder.string()
-console.log("aaaa2", object.instance_name);
             object.type_name = decoder.string()
-console.log("aaaa3", object.type_name);
             object.description = decoder.string()
-console.log("aaaa4", object.description);
             object.version = decoder.string()
-console.log("aaaa5", object.version);
             object.vendor = decoder.string()
-console.log("aaaa6", object.vendor);
             object.category = decoder.string()
-console.log("aaaa7", object.category);
             object.port_profiles = decoder.sequence(() => decoder.value("omg.org/RTC/PortProfile"))
-console.log("aaaa8", object.port_profiles);
             object.parent = decoder.object()
-console.log("aaaa9", object.parent);
             object.properties = decoder.sequence(() => decoder.value("omg.org/RTC/NameValue"))
-console.log("aaaa10", object.properties);
         } else {
             object.instance_name = (init === undefined || init.instance_name === undefined) ? "" : init.instance_name
             object.type_name = (init === undefined || init.type_name === undefined) ? "" : init.type_name
