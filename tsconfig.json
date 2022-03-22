@@ -1,0 +1,33 @@
+// this typescript configuration is shared by all builds and visual studio code
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "es6",
+        "moduleResolution": "node",
+        "traceResolution": false,
+        "esModuleInterop": true,
+        "incremental": true,
+        "declaration": true,
+        "outDir": "lib",
+        "baseUrl": ".",
+        "paths": {
+          "src/*": [ "src/*" ]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "removeComments": true,
+        "experimentalDecorators": true,
+        "noImplicitOverride": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "allowJs": false,
+        "noImplicitAny": true,
+        "sourceMap": true
+      },
+    "include": [
+        "src/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

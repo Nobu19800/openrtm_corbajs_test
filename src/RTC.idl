@@ -1,0 +1,217 @@
+// RTC.idl
+
+
+module RTC
+{
+  struct NameValue
+  {
+    string name;
+    //any value;
+  };
+
+  typedef sequence<NameValue> NVList;
+
+  enum ReturnCode_t
+  {
+    RTC_OK,
+    RTC_ERROR,
+    BAD_PARAMETER,
+    UNSUPPORTED,
+    OUT_OF_RESOURCES,
+    PRECONDITION_NOT_MET
+  };
+
+  enum LifeCycleState
+  {
+    CREATED_STATE,
+    INACTIVE_STATE,
+    ACTIVE_STATE,
+    ERROR_STATE
+  };
+
+  enum ExecutionKind
+  {
+    PERIODIC,
+    EVENT_DRIVEN,
+    OTHER
+  };
+
+  enum PortInterfacePolarity
+  {
+    PROVIDED,
+    REQUIRED
+  };
+
+  struct PortInterfaceProfile
+  {
+    string instance_name;
+    string type_name;
+    PortInterfacePolarity polarity;
+  };
+
+  typedef sequence<PortInterfaceProfile> PortInterfaceProfileList;
+
+
+  interface LightweightRTObject
+  {
+    ReturnCode_t initialize();
+    ReturnCode_t finalize();
+    //boolean is_alive(in ExecutionContext exec_context);
+    ReturnCode_t exit();
+    //long attach_context(in ExecutionContext exec_context);
+    ReturnCode_t detach_context(in long exec_handle);
+    //ExecutionContext get_context(in long exec_handle);
+    //ExecutionContextList get_owned_contexts();
+    //ExecutionContextList get_participating_contexts();
+    //long get_context_handle(in ExecutionContext cxt);
+  };
+
+  interface ComponentAction
+  {
+    ReturnCode_t on_initialize();
+    ReturnCode_t on_finalize();
+    ReturnCode_t on_startup(in long exec_handle);
+    ReturnCode_t on_shutdown(in long exec_handle);
+    ReturnCode_t on_activated(in long exec_handle);
+    ReturnCode_t on_deactivated(in long exec_handle);
+    ReturnCode_t on_aborting(in long exec_handle);
+    ReturnCode_t on_error(in long exec_handle);
+    ReturnCode_t on_reset(in long exec_handle);
+  };
+
+  interface DataFlowComponentAction
+  {
+    ReturnCode_t on_execute(in long exec_handle);
+    ReturnCode_t on_state_update(in long exec_handle);
+    ReturnCode_t on_rate_changed(in long exec_handle);
+  };
+
+  interface DataFlowComponent
+  {
+  };
+
+  interface Fsm
+  {
+  };
+
+  interface FsmParticipantAction
+  {
+    ReturnCode_t on_action(in long exec_handle);
+  };
+
+  interface FsmParticipant
+  {
+  };
+
+  interface Mode
+  {
+  };
+
+  interface ModeCapable
+  {
+    Mode get_default_mode();
+    Mode get_current_mode();
+    Mode get_current_mode_in_context(in long exec_context);
+    Mode get_pending_mode();
+    Mode get_pending_mode_in_context(in long exec_context);
+    ReturnCode_t set_mode(in Mode new_mode,
+			  in boolean immediate);
+  };
+
+  interface MultiModeComponentAction
+  {
+    ReturnCode_t on_mode_changed(in long exec_handle);
+  };
+
+  interface MultiModeObject
+  {
+  };
+
+  interface RTObject
+  {
+  };
+  
+  interface ExecutionContext
+  {
+    boolean is_running();
+    ReturnCode_t start();
+    ReturnCode_t stop();
+    double get_rate();
+    ReturnCode_t set_rate(in double rate);
+    ReturnCode_t add_component(in LightweightRTObject comp);
+    ReturnCode_t remove_component(in LightweightRTObject comp);
+    ReturnCode_t activate_component(in LightweightRTObject comp);
+    ReturnCode_t deactivate_component(in LightweightRTObject comp);
+    ReturnCode_t reset_component(in LightweightRTObject comp);
+    LifeCycleState get_component_state(in LightweightRTObject comp);
+    ExecutionKind get_kind();
+  };
+
+  interface PortService
+  {
+    //PortProfile get_port_profile();
+    //ConnectorProfileList get_connector_profiles();
+    //ConnectorProfile get_connector_profile(in string connector_id);
+    //ReturnCode_t connect(inout ConnectorProfile connector_profile);
+    //ReturnCode_t connect(in ConnectorProfile connector_profile);
+    ReturnCode_t disconnect(in string connector_id);
+    ReturnCode_t disconnect_all();
+    //ReturnCode_t notify_connect(inout ConnectorProfile connector_profile);
+    //ReturnCode_t notify_connect(in ConnectorProfile connector_profile);
+    ReturnCode_t notify_disconnect(in string connector_id);
+  };
+
+  typedef sequence<PortService> PortServiceList;
+
+
+  struct ConnectorProfile
+  {
+    string name;
+    string connector_id;
+    PortServiceList ports;
+    NVList properties;
+  };
+
+  typedef sequence<ConnectorProfile> ConnectorProfileList;
+  
+  struct PortProfile
+  {
+    string name;
+    PortInterfaceProfileList interfaces;
+    PortService port_ref;
+    ConnectorProfileList connector_profiles;
+    RTObject owner;
+    NVList properties;
+  };
+
+  typedef sequence<PortProfile> PortProfileList;
+
+  struct ComponentProfile
+  {
+    string instance_name;
+    string type_name;
+    string description;
+    string version;
+    string vendor;
+    string category;
+    PortProfileList port_profiles;
+    RTObject parent;
+    NVList properties;
+  };
+
+  typedef sequence<RTObject> RTCList;
+  
+  struct ExecutionContextProfile
+  {
+    ExecutionKind kind;
+    double rate;
+    RTObject owner;
+    RTCList participants;
+    NVList properties;
+  };
+
+  interface ExecutionContextService
+  {
+    ExecutionContextProfile get_profile();
+  };
+};

@@ -1,0 +1,91 @@
+// RTC.idl
+
+
+module RTC
+{
+  //typedef long ExecutionContextHandle_t;
+
+  struct NameValue
+  {
+    string name;
+    //any value;
+  };
+
+  typedef sequence<NameValue> NVList;
+
+  enum ReturnCode_t
+  {
+    RTC_OK,
+    RTC_ERROR,
+    BAD_PARAMETER,
+    UNSUPPORTED,
+    OUT_OF_RESOURCES,
+    PRECONDITION_NOT_MET
+  };
+
+  enum LifeCycleState
+  {
+    CREATED_STATE,
+    INACTIVE_STATE,
+    ACTIVE_STATE,
+    ERROR_STATE
+  };
+
+  enum ExecutionKind
+  {
+    PERIODIC,
+    EVENT_DRIVEN,
+    OTHER
+  };
+
+  enum PortInterfacePolarity
+  {
+    PROVIDED,
+    REQUIRED
+  };
+
+  struct PortInterfaceProfile
+  {
+    string instance_name;
+    string type_name;
+    PortInterfacePolarity polarity;
+  };
+
+  typedef sequence<PortInterfaceProfile> PortInterfaceProfileList;
+
+  interface PortService
+  {
+    //PortProfile get_port_profile();
+    //ConnectorProfileList get_connector_profiles();
+    //ConnectorProfile get_connector_profile(in string connector_id);
+    //ReturnCode_t connect(inout ConnectorProfile connector_profile);
+    //ReturnCode_t connect(in ConnectorProfile connector_profile);
+    ReturnCode_t disconnect(in string connector_id);
+    ReturnCode_t disconnect_all();
+    //ReturnCode_t notify_connect(inout ConnectorProfile connector_profile);
+    //ReturnCode_t notify_connect(in ConnectorProfile connector_profile);
+    ReturnCode_t notify_disconnect(in string connector_id);
+  };
+
+  typedef sequence<PortService> PortServiceList;
+
+  struct ComponentProfile
+  {
+    string instance_name;
+    string type_name;
+    string description;
+    string version;
+    string vendor;
+    string category;
+    //PortProfileList port_profiles;
+    //RTObject parent;
+    NVList properties;
+  };
+  
+  interface RTObject
+  {
+    ComponentProfile get_component_profile();
+    PortServiceList get_ports();
+  };
+
+};
