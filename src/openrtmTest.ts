@@ -2,8 +2,6 @@ import { ORB, GIOPDecoder } from 'corba.js'
 import { NamingContextExtStub } from 'corba.js'
 //import { WsProtocol } from "corba.js/net/ws"
 import { WsProtocol } from "corba.js/net/browser"
-import * as skel from "./example_echo_skel.js"
-import * as stub from "./example_echo_stub.js"
 import * as RTC_skel from "./RTC_skel.js"
 import * as RTC_stub from "./RTC_stub.js"
 import * as RTC_interface from "./RTC.js"
